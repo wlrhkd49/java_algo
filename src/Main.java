@@ -1,12 +1,22 @@
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class Ex {
+public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
+    static void input() {
 
+    }
+
+    static void pro() {
+
+    }
+
+    public static void main(String[] args) {
+        input();
+        pro();
     }
 
     static class FastReader {

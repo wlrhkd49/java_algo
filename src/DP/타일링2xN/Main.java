@@ -1,12 +1,38 @@
+package DP.타일링2xN;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class Ex {
+public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
+    static int N;
+    static int[] Dy;
 
+    static void input() {
+        N = scan.nextInt();
+    }
+
+    static void pro() {
+        Dy = new int[1005];
+
+        // 초기값 구하기
+        Dy[1] = 1;
+        Dy[2] = 2;
+
+        // 점화식을 토대로 Dy 배열 만들기
+        for(int i=3; i<=N; i++) {
+            Dy[i] = (Dy[i-1] + Dy[i-2]) % 10007;
+        }
+
+        System.out.println(Dy[N]);
+    }
+
+    public static void main(String[] args) {
+        input();
+        pro();
     }
 
     static class FastReader {
