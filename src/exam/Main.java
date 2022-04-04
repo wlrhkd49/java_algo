@@ -2,60 +2,59 @@ package exam;
 
 import java.util.Scanner;
 
-public class Main {
-    static Scanner scan = new Scanner(System.in);
+class Main {
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static Integer max, min;
-    static int[] nums, operators, order;
+    static int[][] dist1 = {{0, 5, 2, 4, 1}, {5, 0, 3, 9, 6}, {2, 3, 0, 6, 3}, {4, 9, 6, 0, 3}, {1, 6, 3, 3, 0}};
+    static int[][] dist = {{0, 2, 3, 1}, {2, 0, 1, 1}, {3, 1, 0, 2}, {1, 1, 2, 0}};
+    static int N = dist.length;
+    static long sum;
+    static int[] selected = new int[N], isUsed = new int[N];
 
-    static void input() {
-        N = scan.nextInt();
-        nums = new int[N+1];
-        operators = new int[5];
-        order = new int[N+1];
-        for(int i = 1; i<=N; i++) nums[i] = scan.nextInt();
-        for(int i = 1; i<=4; i++) operators[i] = scan.nextInt();
-
-        max = Integer.MIN_VALUE;
-        min = Integer.MAX_VALUE;
+    static boolean possible(int k) {
+        sum = 0;
+        for(int i = 0; i < selected.length; i++) {
+            int tmp = selected[i];
+            if(selected[i] == -1) continue;
+            if(isUsed[tmp] == 0) continue;
+            sum += dist[i][k];
+            if(dist[k][tmp] != sum) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    static int calculator(int x1, int operator ,int x2) {
-        if(operator == 1) {
-            return x1 + x2;
-        }
-        else if(operator == 2) {
-            return x1 - x2;
-        }
-        else if(operator == 3) {
-            return x1 * x2;
+    static void dfs(int k) {
+        if(k == N) {
+            for(int i = 0; i < N; i++) {
+                sb.append(selected[i]).append(' ');
+            }
+            sb.append('\n');
         }
         else {
-            return x1 / x2;
-        }
-    }
-
-    static void pro(int k, int value) {
-        if( k == N ) {
-            max = Math.max(max, value);
-            min = Math.min(min, value);
-        }
-        else {
-            for(int cand = 1; cand <= 4; cand++) {
-                if(operators[cand] >= 1) {
-                    operators[cand]--;
-                    pro(k+1, calculator(value, cand, nums[k+1]));
-                    operators[cand]++;
+            for(int cand = 0; cand < N; cand++) {
+                if(isUsed[cand] == 1) continue; // 이전에 사용했으면 패스
+                if(possible(k)) {
+                    selected[k] = cand; isUsed[cand] = 1;
+                    dfs(k+1);
+                    selected[k] = 0; isUsed[cand] = 0;
                 }
             }
         }
     }
 
+    public static int[][] solution(int[][] dist) {
+        int[][] answer = {};
+        return answer;
+    }
+
     public static void main(String[] args) {
-        input();
-        pro(1, nums[1]);
-        sb.append(max).append('\n').append(min);
-        System.out.println(sb);
+        for(int i = 0; i<N; i++) {
+            selected[i] = -1;
+        }
+        for(int i = 0; i<N; i++) {
+            dfs(i);
+        }
+        System.out.println(sb.toString());
     }
 }
