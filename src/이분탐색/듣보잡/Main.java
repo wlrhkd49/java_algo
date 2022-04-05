@@ -37,7 +37,7 @@ public class Main {
     static boolean bin_search(String[] A, int L, int R, String X) {
         while(L<=R) {
             int mid = (L + R) / 2;
-            if(A[mid].equals(X)) {
+            if(A[mid].equals(X)) { // A[mid] < X
                 return true;
             }
 
