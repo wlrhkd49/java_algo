@@ -8,44 +8,51 @@ import java.util.Scanner;
 public class Main {
     static Scanner scan = new Scanner(System.in);
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static long[] A;
+    static int N, M;
+    static int[] A;
 
     static void input() {
         N = scan.nextInt();
-        A = new long[N];
-        for(int i = 0; i < N; i++) {
-            A[i] = scan.nextLong();
+        M = scan.nextInt();
+        A = new int[N+1];
+        for(int i = 1; i<=N; i++) {
+            A[i] = scan.nextInt();
+        }
+    }
+
+    static boolean determination(int H) {
+        int sum = 0;
+        for(int i = 1; i <= N; i++) {
+            if(A[i] - H > 0) {
+                sum += A[i] - H;
+            }
+        }
+
+        if(sum >= M) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
     static void pro() {
-        // A 정렬
-        Arrays.sort(A);
-
-        int curCnt = 1, modeCnt = 1;
-        long mode = A[0];
-        long last = A[0];
-
-        for(int i = 1; i < N; i++) {
-            if(last == A[i]) {
-                curCnt++;
-                if(curCnt > modeCnt) {
-                    modeCnt = curCnt;
-                    mode = A[i];
-                }
+        int L = 0, R = 2000000000, result = 0;
+        while(L<=R) {
+            int mid = (L+R)/2;
+            if(determination(mid)) {
+                result = mid;
+                L = mid + 1;
             }
             else {
-                curCnt = 1;
-                last = A[i];
+                R = mid - 1;
             }
         }
-        sb.append(mode);
+        System.out.println(result);
     }
 
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 }
