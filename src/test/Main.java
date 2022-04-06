@@ -7,40 +7,34 @@ public class Main {
     static Scanner scan = new Scanner(System.in);
     static StringBuilder sb = new StringBuilder();
     static int N;
-    static Elem[] A;
-
-    static public class Elem implements Comparable<Elem> {
-        String name;
-        int kor, eng, math;
-
-        @Override
-        public int compareTo(Elem o) {
-            // 내림차순
-            if(kor != o.kor) return o.kor - kor;
-            if(eng != o.eng) return eng - o.eng;
-            if(math != o.math) return o.math - math;
-            return name.compareTo(o.name);
-        }
-    }
+    static long[] A;
 
     static void input() {
         N = scan.nextInt();
-        A = new Elem[N+1];
+        A = new long[N+1];
         for (int i = 1; i <= N; i++) {
-            A[i] = new Elem();
-            A[i].name = scan.next();
-            A[i].kor = scan.nextInt();
-            A[i].eng = scan.nextInt();
-            A[i].math = scan.nextInt();
+            A[i] = scan.nextLong();
         }
     }
 
     static void pro() {
         Arrays.sort(A, 1, N+1);
 
-        for (int i = 1; i <= N; i++) {
-            sb.append(A[i].name).append('\n');
+        int curCnt = 1, modeCnt = 1;
+        long mode = A[1];
+        for (int i = 2; i <= N; i++) {
+            if(A[i-1] == A[i]) {
+                curCnt++;
+                if(curCnt > modeCnt) {
+                    mode = A[i];
+                    modeCnt = curCnt;
+                }
+            }
+            else {
+                curCnt = 1;
+            }
         }
+        System.out.println(mode);
     }
 
     public static void main(String[] args) {
