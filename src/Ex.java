@@ -1,57 +1,32 @@
 import java.io.*;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Ex {
-    static FastReader scan = new FastReader();
-    static StringBuilder sb = new StringBuilder();
+    static class ThreadTest implements Runnable {
+        public ThreadTest() {}
 
-    public static void main(String[] args) {
-
-    }
-
-    static class FastReader {
-        BufferedReader br;
-        StringTokenizer st;
-
-        public FastReader() {
-            br = new BufferedReader(new InputStreamReader(System.in));
+        public ThreadTest(String name){
+            Thread t = new Thread(this, name);
+            t.start();
         }
 
-        public FastReader(String s) throws FileNotFoundException {
-            br = new BufferedReader(new FileReader(new File(s)));
-        }
-
-        String next() {
-            while (st == null || !st.hasMoreElements()) {
+        @Override
+        public void run() {
+            for(int i = 0; i <= 50; i++) {
+                System.out.print(i + ":" + Thread.currentThread().getName() + " ");
                 try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            return st.nextToken();
         }
+    }
 
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            String str = "";
-            try {
-                str = br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return str;
-        }
+    public static void main(String[] args) {
+        ThreadTest test = new ThreadTest("jjk");
+        ThreadTest test1 = new ThreadTest("jjg");
     }
 }

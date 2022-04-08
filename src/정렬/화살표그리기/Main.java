@@ -19,7 +19,7 @@ public class Main {
         a = new ArrayList[N + 1];
         for (int color = 1; color<=N; color++) {
             // 색깔개수 만큼 리스트 생성
-            a[color] = new ArrayList<Integer>();
+            a[color] = new ArrayList<>();
         }
         for(int i = 1; i<=N; i++) {
             // coord : 좌표, color : 색깔 정보
