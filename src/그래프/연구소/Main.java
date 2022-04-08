@@ -62,7 +62,10 @@ public class Main {
 
         // 탐색이 종료된 시점이니, 안전 영역의 넓이를 계산하고, 정답을 갱신한다.
         int cnt = 0;
-        for (int i = 1; i <= N; i++) for (int j = 1; j <= M; j++) if (A[i][j] == 0 && !visit[i][j]) cnt++;
+        for (int i = 1; i <= N; i++)
+            for (int j = 1; j <= M; j++)
+                if (A[i][j] == 0 && !visit[i][j])
+                    cnt++;
         ans = Math.max(ans, cnt);
     }
 

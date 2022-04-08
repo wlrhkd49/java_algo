@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 // 1260
 // 인접행렬 이용
-public class Main {
+public class Main_matrix {
     static Scanner scan = new Scanner(System.in);
     static StringBuilder sb = new StringBuilder();
 
