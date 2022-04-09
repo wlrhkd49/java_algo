@@ -2,65 +2,75 @@ package test;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-
-    static int N, M;
-    static String[] A;
+    static int N, group_cnt;
+    static ArrayList<Integer> group;
+    static String[] a;
     static boolean[][] visit;
-    static int[][] dist;
     static int[][] dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 
     static void input() {
         N = scan.nextInt();
-        M = scan.nextInt();
-        A = new String[N+1];
-        visit = new boolean[N][M];
-        dist = new int[N][M];
+        a = new String[N];
+        group = new ArrayList<>();
+        visit = new boolean[N][N];
+
         for(int i = 0; i < N; i++) {
-            A[i] = scan.next();
+            a[i] = scan.next();
         }
     }
 
-    static void bfs(int x, int y) {
-        for(int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                dist[i][j] = -1;
-            }
-        }
+    static void BFS(int x, int y) {
         Queue<Integer> Q = new LinkedList<>();
 
         Q.add(x);
         Q.add(y);
         visit[x][y] = true;
-        dist[x][y] = 1;
+        group_cnt++;
 
         while(!Q.isEmpty()) {
-            int _x = Q.poll();
-            int _y = Q.poll();
+            x = Q.poll();
+            y = Q.poll();
 
-            for(int i = 0; i < 4; i++) {
-                int nx = _x + dir[i][0];
-                int ny = _y + dir[i][1];
+            for(int k = 0; k < 4; k++) {
+                int nx = x + dir[k][0];
+                int ny = y + dir[k][1];
 
-                if(nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+                if(nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
                 if(visit[nx][ny]) continue;
-                if(A[nx].charAt(ny) == '0') continue;
+                if(a[nx].charAt(ny) == '0') continue;
 
-                visit[nx][ny] = true;
-                dist[nx][ny] = dist[_x][_y] + 1;
                 Q.add(nx);
                 Q.add(ny);
+                visit[nx][ny] = true;
+                group_cnt++;
             }
         }
+        group.add(group_cnt);
+
     }
 
     static void pro() {
-        bfs(0, 0);
+        for(int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j ++) {
+                if(!visit[i][j] && a[i].charAt(j) == '1') {
+                    group_cnt = 0;
+                    BFS(i, j);
+                }
+            }
+        }
 
-        System.out.println(dist[N-1][M-1]);
+        // 출력결과 정렬하기
+        sb.append(group.size()).append('\n');
+        Collections.sort(group);
+        for(int i = 0; i < group.size(); i++){
+            sb.append(group.get(i)).append('\n');
+        }
+        System.out.println(sb);
     }
 
     public static void main(String[] args) {
