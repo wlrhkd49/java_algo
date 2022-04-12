@@ -15,7 +15,6 @@ public class Main {
     static int[][] dist_water, dist_hedgehog;
     static boolean[][] visit;
     static int[][] dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-    static ArrayList<Integer> group;
 
     static void input() {
         N = scan.nextInt();

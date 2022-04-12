@@ -41,7 +41,7 @@ public class Main {
 
     // A, B, C 물통의 최대 용량을 나타내는 배열
     static int[] Limit;
-    // 남은 C의 값에 따라 가능한 상태인지 확인하는 배열
+    // A가 0일 때 남은 C의 값에 따라 가능한 상태인지 확인하는 배열
     static boolean[] possible;
     // 처리한 State 인지 확인하는 배열
     static boolean[][][] visit;

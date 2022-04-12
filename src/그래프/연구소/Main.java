@@ -72,14 +72,17 @@ public class Main {
     // idx 번째 빈 칸에 벽을 세울 지 말 지 결정해야 하고, 이 전까지 selected_cnt 개의 벽을 세웠다.
     static void dfs(int idx, int selected_cnt) {
         if (selected_cnt == 3) {  // 3 개의 벽을 모두 세운 상태
+            // 정답 갱신
             bfs();
             return;
         }
         if (idx > B) return;  // 더 이상 세울 수 있는 벽이 없는 상태
 
+        // 벽 세우기
         A[blank[idx][0]][blank[idx][1]] = 1;
         dfs(idx + 1, selected_cnt + 1);
 
+        // 벽 안 세우기
         A[blank[idx][0]][blank[idx][1]] = 0;
         dfs(idx + 1, selected_cnt);
     }

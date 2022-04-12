@@ -1,10 +1,9 @@
-package test;
+package 그래프.단지번호붙이기;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Main {
+public class bfs {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
     static ArrayList<Integer> group;

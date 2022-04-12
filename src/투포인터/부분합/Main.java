@@ -22,7 +22,6 @@ public class Main {
         for (int L = 1; L <= n; L++) {
             // L - 1 을 구간에서 제외하기
             sum -= a[L - 1];
-
             // R 을 옮길 수 있을 때 까지 옮기기
             // 합이 S를 넘으면 옮길 필요 없음
             while(R + 1 <= n && sum < S) {
