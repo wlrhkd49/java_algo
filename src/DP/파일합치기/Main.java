@@ -36,7 +36,7 @@ public class Main {
         Dy = new int[K+1][K+1];
 
         for (int len = 2; len <= K; len++) {
-            for(int i = 1; i<=K-len+1; i++) {
+            for(int i = 1; i <= K-len+1; i++) {
                 int j = i + len - 1; // 구간이 끝나는 위치
                 Dy[i][j] = Integer.MAX_VALUE; // 초기에는 크게 설정
 

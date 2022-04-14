@@ -9,70 +9,47 @@ import java.util.StringTokenizer;
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-
-    static class Edge {
-        int to, weight;
-
-        public Edge(int _to, int _weight) {
-            this.to = _to;
-            this.weight = _weight;
-        }
-    }
-
-    static class Info {
-        int idx, dist;
-
-        public Info(int _idx, int _dist) {
-            this.idx = _idx;
-            this.dist = _dist;
-        }
-    }
-
-    static int N, M, start, end;
-    static ArrayList<Edge>[] adj;
-    static int[] dist;
+    static ArrayList<Integer>[] adj;
+    static int[] a;
+    static int[][] Dy;
+    static int N, R, Q;
 
     static void input() {
         N = scan.nextInt();
-        M = scan.nextInt();
+        a = new int[N+1];
         adj = new ArrayList[N+1];
-        dist = new int[N+1];
-        for(int i = 1; i <= N; i++) adj[i] = new ArrayList<>();
-        for(int i = 1; i <= M; i++) {
-            int from = scan.nextInt(), to = scan.nextInt(), weight = scan.nextInt();
-            adj[from].add(new Edge(to, weight));
-        }
-        start = scan.nextInt();
-        end = scan.nextInt();
-    }
-
-    static void dijkstra(int start) {
         for(int i = 1; i <= N; i++) {
-            dist[i] = Integer.MAX_VALUE;
+            a[i] = scan.nextInt();
+            adj[i] = new ArrayList<>();
         }
-
-        PriorityQueue<Info> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o.dist));
-
-        pq.add(new Info(start, 0));
-        dist[start] = 0;
-
-        while(!pq.isEmpty()) {
-            Info info = pq.poll();
-
-            // 꺼낸 정보가 최신 정보랑 다르면, 의미없이 낡은 정보 이므로 버린다.
-            if(dist[info.idx] < info.dist) continue;
-            for(Edge e : adj[info.idx]) {
-                if(dist[e.to] <= dist[info.idx] + e.weight ) continue;
-
-                dist[e.to] = dist[info.idx] + e.weight;
-                pq.add(new Info(e.to, dist[e.to]));
-            }
+        for(int i = 1; i < N; i++) {
+            int x = scan.nextInt(), y = scan.nextInt();
+            adj[x].add(y);
+            adj[y].add(x);
         }
     }
 
+    static void dfs(int x, int prev) {
+        Dy[x][0] = 0;
+        Dy[x][1] = a[x];
+
+        for(int y : adj[x]) {
+            if(y == prev) continue;
+            dfs(y, x);
+            // 아래 자식들의 개수 더해주기
+
+            // 1. x가 선택되지 않으면 자식 중 자식을 선택하거나, 선택하지않거나 중 큰 값을 선택
+            Dy[x][0] += Math.max(Dy[y][0], Dy[y][1]);
+            // 2. x가 선택됐으므로 자식은 전부 선택되면 안된다.
+            Dy[x][1] += Dy[y][0];
+        }
+    }
     static void pro() {
-        dijkstra(start);
-        System.out.println(dist[end]);
+        Dy = new int[N+1][2];
+
+        dfs(1, -1);
+
+        System.out.println(Math.max(Dy[1][0], Dy[1][1]));
     }
 
     public static void main(String[] args) {
