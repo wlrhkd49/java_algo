@@ -42,14 +42,15 @@ public class Main {
         }
 
         // 정렬될 수 있는 정점이 있다면?
-        // 1. 정렬 결과에 추가하기
-        // 2. 정점과 연결된 간선 제거하기
-        // 3. 새롭게 "정렬될 수 있는" 정점
         while(!queue.isEmpty()) {
+            // 1. 정렬 결과에 추가하기
             int x = queue.poll();
             sb.append(x).append(' ');
+
+            // 2. 정점과 연결된 간선 제거하기
             for(int y : adj[x]) {
                 indeg[y]--;
+                // 3. 새롭게 "정렬될 수 있는" 정점
                 if(indeg[y] == 0) queue.add(y);
             }
         }
