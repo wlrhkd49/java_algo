@@ -1,55 +1,53 @@
-package test;
+package 정렬.단어정렬;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+class Info implements Comparable<Info>{
+    int length;
+    String word;
+
+    public Info(int _length, String _word) {
+        this.length = _length;
+        this.word = _word;
+    }
+
+    @Override
+    public int compareTo(Info o) {
+        if(this.length == o.length) return word.compareTo(o.word);
+        else return this.length - o.length;
+    }
+}
+
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int selected[];
-    static int[] nums;
-    static int N, M;
-    static int[] isUsed;
+    static Info[] infos;
+    static int N;
 
     static void input() {
         N = scan.nextInt();
-        M = scan.nextInt();
-        nums = new int[N+1];
-        selected = new int[M+1];
-        isUsed = new int[N+1];
-        for(int i = 1; i <= N; i++) {
-            nums[i] = scan.nextInt();
+        infos = new Info[N];
+        for(int i = 0; i < N; i++) {
+            String word = scan.nextLine();
+            infos[i] = new Info(word.length(), word);
         }
     }
 
-    static void pro(int k) {
-        if (k == M+1) {
-            for(int i = 1; i <= M; i++) {
-                sb.append(selected[i]).append(' ');
-            }
-            sb.append('\n');
-        }
-        else {
-            int last_cand = 0;
-            for (int i = 1; i <= N; i++) {
-                if(isUsed[i] == 1) continue;
-                if(last_cand == nums[i]) continue;
-
-                last_cand = nums[i];
-                selected[k] = nums[i]; isUsed[i] = 1;
-                pro(k+1);
-                selected[k] = 0; isUsed[i] = 0;
+    static void pro() {
+        Arrays.sort(infos, 0, N);
+        for(int i = 0; i < N; i++) {
+            if( i == 0 || (infos[i].word).compareTo(infos[i-1].word) != 0) {
+                sb.append(infos[i].word).append('\n');
             }
         }
     }
 
     public static void main(String[] args) {
         input();
-        Arrays.sort(nums, 1, N+1);
-        pro(1);
+        pro();
         System.out.println(sb);
     }
 
