@@ -1,42 +1,44 @@
-package test;
+package 이분탐색.두수의합;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static int[] a;
-    static int X;
+    static int N, X;
+    static int[] nums;
 
     static void input() {
         N = scan.nextInt();
-        a = new int[N+1];
+        nums = new int[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            nums[i] = scan.nextInt();
         }
         X = scan.nextInt();
     }
 
-    static boolean binary_search(int[] A, int L, int R, int x) {
+    static boolean binary_search(int[] nums, int L, int R, int x) {
         while(L <= R) {
             int mid = (L+R)/2;
-            if(A[mid] == x) return true;
-            else if(A[mid] > x) R = mid - 1;
+            if(nums[mid] == x) return true;
+            else if(nums[mid] > x) R = mid - 1;
             else L = mid + 1;
         }
         return false;
     }
 
     static void pro() {
-        Arrays.sort(a, 1, N+1);
-        int ans = 0;
-        for(int i = 1; i < N; i++) {
-            if (binary_search(a, i+1, N, X - a[i])) ans++;
+        Arrays.sort(nums, 1, N+1);
+        int cnt = 0;
+        for(int i = 1; i <= N-1; i++){
+            if(binary_search(nums, i+1, N, X-nums[i])) {
+                cnt++;
+            }
         }
-        sb.append(ans);
+        sb.append(cnt);
     }
 
     public static void main(String[] args) {

@@ -1,48 +1,56 @@
-package test;
+package 이분탐색.예산;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static int[] a;
-    static int X;
+    static int N, M;
+    static int[] nums;
 
     static void input() {
         N = scan.nextInt();
-        a = new int[N+1];
+        nums = new int[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            nums[i] = scan.nextInt();
         }
-        X = scan.nextInt();
+        M = scan.nextInt();
     }
 
-    static boolean binary_search(int[] A, int L, int R, int x) {
-        while(L <= R) {
-            int mid = (L+R)/2;
-            if(A[mid] == x) return true;
-            else if(A[mid] > x) R = mid - 1;
-            else L = mid + 1;
+    static boolean determination(long x) {
+        int result = 0;
+        for(int i = 1; i <= N; i++) {
+            if(nums[i] <= x) {
+                result += nums[i];
+            }
+            else {
+                result += x;
+            }
         }
-        return false;
+        return result <= M;
     }
 
     static void pro() {
-        Arrays.sort(a, 1, N+1);
-        int ans = 0;
-        for(int i = 1; i < N; i++) {
-            if (binary_search(a, i+1, N, X - a[i])) ans++;
+        long L = 1, R = 0, ans = 0;
+        for(int i = 1; i <= N; i++) R = Math.max(R, nums[i]);
+        while(L<=R) {
+            long mid = (L+R)/2;
+            if(determination(mid)) {
+                ans = mid;
+                L = mid + 1;
+            }
+            else {
+                R = mid - 1;
+            }
         }
-        sb.append(ans);
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 
     static class FastReader {

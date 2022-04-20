@@ -1,42 +1,68 @@
-package test;
+package 이분탐색.숫자카드2;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static int[] a;
-    static int X;
+    static int N, M;
+    static int[] A, B;
 
     static void input() {
         N = scan.nextInt();
-        a = new int[N+1];
+        A = new int[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            A[i] = scan.nextInt();
         }
-        X = scan.nextInt();
+        M = scan.nextInt();
     }
 
-    static boolean binary_search(int[] A, int L, int R, int x) {
+    static int lower_bound(int[] A, int L, int R, int x) {
+        int ans = R + 1;
+        // 왼쪽 끝 인덱스 찾음.
         while(L <= R) {
             int mid = (L+R)/2;
-            if(A[mid] == x) return true;
-            else if(A[mid] > x) R = mid - 1;
-            else L = mid + 1;
+            if(A[mid] >= x) {
+                ans = mid;
+                R = mid - 1;
+            }
+            else {
+                L = mid + 1;
+            }
         }
-        return false;
+        return ans;
+    }
+
+    static int upper_bound(int[] A, int L, int R, int x) {
+        int ans = R + 1;
+        while(L <= R) {
+            int mid = (L+R)/2;
+            if(A[mid] > x) {
+                ans = mid;
+                R = mid - 1;
+            }
+            else {
+                L = mid + 1;
+            }
+        }
+        return ans;
     }
 
     static void pro() {
-        Arrays.sort(a, 1, N+1);
-        int ans = 0;
-        for(int i = 1; i < N; i++) {
-            if (binary_search(a, i+1, N, X - a[i])) ans++;
+        Arrays.sort(A, 1, N+1);
+        for(int i = 1; i <= M; i++) {
+            int x = scan.nextInt();
+            int low = lower_bound(A, 1, N, x);
+            int up = upper_bound(A, 1, N, x);
+            System.out.println(low);
+            System.out.println(up);
+            sb.append(up-low).append(' ');
         }
-        sb.append(ans);
+        sb.append('\n');
     }
 
     public static void main(String[] args) {

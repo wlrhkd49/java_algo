@@ -1,48 +1,51 @@
-package test;
+package 이분탐색.랜선자르기;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static int[] a;
-    static int X;
+    static int[] nums;
+    static int K, N;
 
     static void input() {
+        K = scan.nextInt();
+        nums = new int[K+1];
         N = scan.nextInt();
-        a = new int[N+1];
-        for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+        for(int i = 1; i <= K; i++) {
+            nums[i] = scan.nextInt();
         }
-        X = scan.nextInt();
     }
 
-    static boolean binary_search(int[] A, int L, int R, int x) {
-        while(L <= R) {
-            int mid = (L+R)/2;
-            if(A[mid] == x) return true;
-            else if(A[mid] > x) R = mid - 1;
-            else L = mid + 1;
+    static boolean determination(long len) {
+        long ans = 0;
+        for(int i = 1; i <= K; i++) {
+            ans += nums[i] / len;
         }
-        return false;
+        if(ans >= N) return true;
+        else return false;
     }
 
     static void pro() {
-        Arrays.sort(a, 1, N+1);
-        int ans = 0;
-        for(int i = 1; i < N; i++) {
-            if (binary_search(a, i+1, N, X - a[i])) ans++;
+        long L = 1, R = Integer.MAX_VALUE, result = 0;
+        while( L <= R ) {
+            long mid = (L+R)/2;
+            if (determination(mid)) {
+                result = mid;
+                L = mid + 1;
+            }
+            else {
+                R = mid - 1;
+            }
         }
-        sb.append(ans);
+        System.out.println(result);
     }
 
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 
     static class FastReader {
