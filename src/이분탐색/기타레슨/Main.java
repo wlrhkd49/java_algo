@@ -1,8 +1,6 @@
-package test;
+package 이분탐색.기타레슨;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -102,3 +100,4 @@ public class Main {
         }
     }
 }
+
