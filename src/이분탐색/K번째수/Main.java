@@ -1,8 +1,6 @@
-package test;
+package 이분탐색.K번째수;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,14 +10,33 @@ public class Main {
     static int[] a;
 
     static void input() {
-
+        N = scan.nextInt();
+        K = scan.nextInt();
     }
 
     static boolean determination(long n) {
+        // n 보다 작거나 같은 원소의 개수 합이 K개 이상인가?
+        long sum = 0;
+        for(int i = 1; i <= N; i++) {
+            sum += Math.min(N, n / i);
+        }
+        return sum >= K;
     }
 
     static void pro() {
-
+        // B[K] = x 에서 x 값을 조정하면서 x보다 작거나 같은 원소의 개수가 K값이랑 일치 하는 지 확인
+        long L = 1, R = (long)N * N, ans = 0;
+        while(L <= R) {
+            long mid = ( L + R ) / 2;
+            if(determination(mid)) {
+                ans = mid;
+                R = mid - 1;
+            }
+            else {
+                L = mid + 1;
+            }
+        }
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
@@ -74,3 +91,4 @@ public class Main {
         }
     }
 }
+
