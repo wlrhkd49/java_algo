@@ -1,28 +1,44 @@
-package test;
+package 투포인터.수들의합2;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, K;
-    static int[] a;
+    static int N, M;
+    static int[] nums;
 
     static void input() {
-
+        N = scan.nextInt();
+        M = scan.nextInt();
+        nums = new int[N+1];
+        for(int i = 1; i <= N; i++) {
+            nums[i] = scan.nextInt();
+        }
     }
 
     static void pro() {
 
+        int R = 0, ans = 0, sum = 0;
+        for(int L = 1; L <= N; L++) {
+            sum -= nums[L-1];
+
+            while(R + 1 <= N && sum < M) {
+                R++;
+                sum += nums[R];
+            }
+
+            if(sum == M) ans++;
+        }
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 
     static class FastReader {

@@ -1,28 +1,45 @@
-package test;
+package 투포인터.수열;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
     static int N, K;
     static int[] a;
 
     static void input() {
-
+        N = scan.nextInt();
+        K = scan.nextInt();
+        a = new int[N+1];
+        for(int i = 1; i <= N; i++) {
+            a[i] = scan.nextInt();
+        }
     }
 
     static void pro() {
+        int R = 0, ans = -100 * N, sum = 0;
+        for(int L = 1; L + K - 1 <= N; L++) {
+            // 맨 앞 제거
+            sum -= a[L-1];
 
+            // 연속 K일 까지 전부 더하기
+            while(R + 1 <= L + K - 1) {
+                sum += a[++R];
+            }
+
+            // 정답 갱신
+            ans = Math.max(ans, sum);
+        }
+
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 
     static class FastReader {
