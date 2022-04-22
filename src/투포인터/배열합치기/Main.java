@@ -1,44 +1,44 @@
-package test;
+package 투포인터.배열합치기;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, K;
-    static int[] a;
+    static int N, M;
+    static int[] a, b;
 
     static void input() {
         N = scan.nextInt();
-        K = scan.nextInt();
+        M = scan.nextInt();
         a = new int[N+1];
+        b = new int[M+1];
         for(int i = 1; i <= N; i++) {
             a[i] = scan.nextInt();
+        }
+        for(int i = 1; i <= M; i++) {
+            b[i] = scan.nextInt();
         }
     }
 
     static void pro() {
-        int R = 0, ans = -100 * N, sum = 0;
-        for(int L = 1; L + K - 1 <= N; L++) {
-            // 맨 앞 수 제거
-            sum -= a[L-1];
-
-            while(R + 1 <= L + K - 1) {
-                sum += a[++R];
-            }
-
-            ans = Math.max(ans, sum);
+        int L = 1, R = 1;
+        while(L <= N && R <= M) {
+            if(a[L] <= b[R]) sb.append(a[L++]).append(' ');
+            else sb.append(b[R++]).append(' ');
         }
-        System.out.println(ans);
+        while(L <= N) sb.append(a[L++]).append(' ');
+        while(R <= M) sb.append(b[R++]).append(' ');
+
+        System.out.println(sb);
     }
 
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 
     static class FastReader {

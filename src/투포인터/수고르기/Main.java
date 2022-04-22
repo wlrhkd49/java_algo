@@ -1,19 +1,19 @@
-package test;
+package 투포인터.수고르기;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, K;
+    static int N, M;
     static int[] a;
 
     static void input() {
         N = scan.nextInt();
-        K = scan.nextInt();
+        M = scan.nextInt();
         a = new int[N+1];
         for(int i = 1; i <= N; i++) {
             a[i] = scan.nextInt();
@@ -21,16 +21,16 @@ public class Main {
     }
 
     static void pro() {
-        int R = 0, ans = -100 * N, sum = 0;
-        for(int L = 1; L + K - 1 <= N; L++) {
-            // 맨 앞 수 제거
-            sum -= a[L-1];
+        Arrays.sort(a, 1, N+1);
 
-            while(R + 1 <= L + K - 1) {
-                sum += a[++R];
+        int R = 1, ans = Integer.MAX_VALUE;
+        for(int L = 1; L <= N; L++) {
+            while(a[R] - a[L] < M && R + 1 <= N) {
+                R++;
             }
 
-            ans = Math.max(ans, sum);
+            if(a[R] - a[L] >= M)
+                ans = Math.min(ans, a[R] - a[L]);
         }
         System.out.println(ans);
     }
@@ -38,7 +38,6 @@ public class Main {
     public static void main(String[] args) {
         input();
         pro();
-        System.out.println(sb);
     }
 
     static class FastReader {
