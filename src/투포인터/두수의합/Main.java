@@ -1,36 +1,32 @@
-package test;
+package 투포인터.두수의합;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, M;
+    static int n, x;
     static int[] a;
 
     static void input() {
-        N = scan.nextInt();
-        M = scan.nextInt();
-        a = new int[N+1];
-        for(int i = 1; i <= N; i++) {
+        n = scan.nextInt();
+        a = new int[n+1];
+        for(int i = 1; i <= n; i++) {
             a[i] = scan.nextInt();
         }
+        x = scan.nextInt();
     }
 
     static void pro() {
-        Arrays.sort(a, 1, N+1);
-        int R = 1, ans = Integer.MAX_VALUE;
-        for(int L = 1; L <= N; L++) {
-            while(a[R] - a[L] < M && R+1 <= N ) {
-                R++;
-            }
-
-            if(a[R] - a[L] >= M) {
-                ans = Math.min(ans, a[R] - a[L]);
-            }
+        Arrays.sort(a, 1, n+1);
+        int L = 1, R = n, ans = 0;
+        while(L < R) {
+            if(a[L] + a[R] == x) ans++;
+            if(a[L] + a[R] > x) R--;
+            else L++;
         }
         System.out.println(ans);
     }
