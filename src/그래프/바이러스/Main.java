@@ -1,46 +1,54 @@
-package test;
+package 그래프.바이러스;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N;
-    static int[] a;
+    static int N, M, ans;
+    static ArrayList<Integer>[] adj;
+    static boolean[] visit;
 
     static void input() {
         N = scan.nextInt();
-        a = new int[N+1];
+        M = scan.nextInt();
+        visit = new boolean[N+1];
+        adj = new ArrayList[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            adj[i] = new ArrayList<>();
         }
-        Arrays.sort(a, 1, N+1);
+        for(int i = 1; i <= M; i++) {
+            int x = scan.nextInt(), y = scan.nextInt();
+            adj[x].add(y);
+            adj[y].add(x);
+        }
+    }
+
+    static void bfs(int x) {
+        Queue<Integer> Q = new LinkedList<>();
+        Q.add(x);
+        visit[x] = true;
+
+        while(!Q.isEmpty()) {
+            x = Q.poll();
+
+            for(int y : adj[x]) {
+                if(visit[y]) continue;
+                Q.add(y);
+                ans++;
+                visit[y] = true;
+            }
+        }
     }
 
     static void pro() {
-        long best_sum = Long.MAX_VALUE;
-        int v1 = 0, v2 = 0, v3 = 0;
-
-        for(int i = 1; i <= N - 2; i++) {
-            int target = a[i];
-            int L = i + 1, R = N;
-
-            while(L < R) {
-                if (best_sum > Math.abs((long)target + a[L] + a[R])) {
-                    best_sum = Math.abs((long)target + a[L] + a[R]);
-                    v1 = target;
-                    v2 = a[L];
-                    v3 = a[R];
-                }
-                if (a[L] + a[R] > -target) R--;
-                else L++;
-            }
-        }
-        sb.append(v1).append(' ').append(v2).append(' ').append(v3);
-        System.out.println(sb);
+        bfs(1);
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
