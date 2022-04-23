@@ -1,7 +1,7 @@
 package test;
 
 import java.io.*;
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -9,29 +9,42 @@ public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
     static int N, M;
-    static int[] a;
+    static ArrayList<Integer>[] adj;
+    static boolean[] visit;
 
     static void input() {
         N = scan.nextInt();
         M = scan.nextInt();
-        a = new int[N+1];
+        adj = new ArrayList[N+1];
+        visit = new boolean[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            adj[i] = new ArrayList<>();
+        }
+        for(int i = 1; i <= M; i++) {
+            int x = scan.nextInt(), y = scan.nextInt();
+            adj[x].add(y);
+            adj[y].add(x);
+        }
+    }
+
+    static void dfs(int x) {
+        visit[x] = true;
+
+        for(int y : adj[x]) {
+            if(visit[y]) continue;
+            dfs(y);
         }
     }
 
     static void pro() {
-        Arrays.sort(a, 1, N+1);
-        int R = 1, ans = Integer.MAX_VALUE;
-        for(int L = 1; L <= N; L++) {
-            while(a[R] - a[L] < M && R+1 <= N ) {
-                R++;
-            }
+        int ans = 0;
 
-            if(a[R] - a[L] >= M) {
-                ans = Math.min(ans, a[R] - a[L]);
-            }
+        for(int i = 1; i <= N; i++) {
+            if(visit[i]) continue;
+            ans++;
+            dfs(i);
         }
+
         System.out.println(ans);
     }
 
