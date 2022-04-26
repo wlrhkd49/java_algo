@@ -8,39 +8,39 @@ import java.util.StringTokenizer;
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N;
+    static int N, M, cnt;
+    static ArrayList<Integer>[] adj;
     static int[] a;
+    static boolean[] visit;
 
     static void input() {
         N = scan.nextInt();
-        a = new int[N+1];
+        M = scan.nextInt();
+        adj = new ArrayList[N+1];
+        visit = new boolean[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            adj[i] = new ArrayList<>();
         }
-        Arrays.sort(a, 1, N+1);
+        for(int i = 1; i <= M; i++) {
+            int x = scan.nextInt(), y = scan.nextInt();
+            adj[x].add(y);
+            adj[y].add(x);
+        }
+    }
+
+    static void dfs(int x) {
+        visit[x] = true;
+        cnt++;
+
+        for(int y : adj[x]) {
+            if(visit[y]) continue;
+            dfs(y);
+        }
     }
 
     static void pro() {
-        long best_sum = Long.MAX_VALUE;
-        int v1 = 0, v2 = 0, v3 = 0;
-
-        for(int i = 1; i <= N - 2; i++) {
-            int target = a[i];
-            int L = i + 1, R = N;
-
-            while(L < R) {
-                if (best_sum > Math.abs((long)target + a[L] + a[R])) {
-                    best_sum = Math.abs((long)target + a[L] + a[R]);
-                    v1 = target;
-                    v2 = a[L];
-                    v3 = a[R];
-                }
-                if (a[L] + a[R] > -target) R--;
-                else L++;
-            }
-        }
-        sb.append(v1).append(' ').append(v2).append(' ').append(v3);
-        System.out.println(sb);
+        dfs(1);
+        System.out.println(cnt-1);
     }
 
     public static void main(String[] args) {
