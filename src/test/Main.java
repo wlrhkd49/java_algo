@@ -1,51 +1,63 @@
 package test;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, M, cnt;
-    static ArrayList<Integer>[] adj;
-    static int[] a;
-    static boolean[] visit;
+    static int[][] dir = {{1, 2}, {2, 1}, {-1, 2}, {-2, 1}, {1, -2}, {2, -1}, {-1, -2}, {-2, -1}};
+    static int N, start_x, start_y, dest_x, dest_y;
+    static int[][] dist;
+    static boolean[][] visit;
 
     static void input() {
         N = scan.nextInt();
-        M = scan.nextInt();
-        adj = new ArrayList[N+1];
-        visit = new boolean[N+1];
-        for(int i = 1; i <= N; i++) {
-            adj[i] = new ArrayList<>();
-        }
-        for(int i = 1; i <= M; i++) {
-            int x = scan.nextInt(), y = scan.nextInt();
-            adj[x].add(y);
-            adj[y].add(x);
-        }
+        start_x = scan.nextInt();
+        start_y = scan.nextInt();
+        dest_x = scan.nextInt();
+        dest_y = scan.nextInt();
+        dist = new int[N][N];
+        visit = new boolean[N][N];
     }
 
-    static void dfs(int x) {
-        visit[x] = true;
-        cnt++;
+    static void bfs(int x, int y) {
+        Queue<Integer> Q = new LinkedList<>();
 
-        for(int y : adj[x]) {
-            if(visit[y]) continue;
-            dfs(y);
+        Q.add(x);
+        Q.add(y);
+        visit[x][y] = true;
+
+        while(!Q.isEmpty()) {
+            x = Q.poll();
+            y = Q.poll();
+
+            for(int k = 0; k < 8; k++) {
+                int nx = x + dir[k][0];
+                int ny = y + dir[k][1];
+
+                if(nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
+                if(visit[nx][ny]) continue;
+
+                Q.add(nx);
+                Q.add(ny);
+                dist[nx][ny] = dist[x][y] + 1;
+                visit[nx][ny] = true;
+            }
         }
     }
 
     static void pro() {
-        dfs(1);
-        System.out.println(cnt-1);
+        bfs(start_x, start_y);
+        System.out.println(dist[dest_x][dest_y]);
     }
 
     public static void main(String[] args) {
-        input();
-        pro();
+        int t = scan.nextInt();
+        for(int i = 0; i < t; i++) {
+            input();
+            pro();
+        }
     }
 
     static class FastReader {
