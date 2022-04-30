@@ -6,16 +6,14 @@ import java.util.*;
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, start, dest, M;
     static ArrayList<Integer>[] adj;
-    static boolean[] visit;
     static int[] dist;
+    static int N, M;
 
     static void input() {
         N = scan.nextInt();
-        start = scan.nextInt();
-        dest = scan.nextInt();
         M = scan.nextInt();
+        dist = new int[N+1];
         adj = new ArrayList[N+1];
         for(int i = 1; i <= N; i++) {
             adj[i] = new ArrayList<>();
@@ -25,33 +23,31 @@ public class Main {
             adj[x].add(y);
             adj[y].add(x);
         }
-        dist = new int[N+1];
-        visit = new boolean[N+1];
+        for(int i = 1; i <= N; i++) dist[i] = -1;
     }
 
-    static void bfs(int x) {
+    static int bfs(int start) {
+        int ans = 0;
         Queue<Integer> Q = new LinkedList<>();
-
-        Q.add(x);
-        visit[x] = true;
+        Q.add(start);
+        dist[start] = 0;
 
         while(!Q.isEmpty()) {
-            x = Q.poll();
+            int x = Q.poll();
+            if(dist[x] == 2) continue;
 
             for(int y : adj[x]) {
-                if(visit[y]) continue;
-
+                if(dist[y] != -1) continue;
                 Q.add(y);
-                visit[y] = true;
                 dist[y] = dist[x] + 1;
+                ans++;
             }
         }
+        return ans;
     }
 
     static void pro() {
-        bfs(start);
-        if(dist[dest] == 0) System.out.println(-1);
-        else System.out.println(dist[dest]);
+        System.out.println(bfs(1));
     }
 
     public static void main(String[] args) {
