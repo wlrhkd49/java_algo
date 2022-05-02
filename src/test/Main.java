@@ -7,14 +7,13 @@ public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
     static ArrayList<Integer>[] adj;
-    static int[] dist;
-    static int N, M;
+    static boolean[] visit;
+    static int N, M, vertexCnt, edgeCnt;
 
     static void input() {
-        N = scan.nextInt();
-        M = scan.nextInt();
-        dist = new int[N+1];
+        visit = new boolean[N+1];
         adj = new ArrayList[N+1];
+
         for(int i = 1; i <= N; i++) {
             adj[i] = new ArrayList<>();
         }
@@ -23,36 +22,52 @@ public class Main {
             adj[x].add(y);
             adj[y].add(x);
         }
-        for(int i = 1; i <= N; i++) dist[i] = -1;
     }
 
-    static int bfs(int start) {
-        int ans = 0;
+    static void bfs(int start) {
         Queue<Integer> Q = new LinkedList<>();
         Q.add(start);
-        dist[start] = 0;
+        visit[start] = true;
 
         while(!Q.isEmpty()) {
             int x = Q.poll();
-            if(dist[x] == 2) continue;
+            vertexCnt++;
+            edgeCnt += adj[x].size();
+            visit[x] = true;
 
             for(int y : adj[x]) {
-                if(dist[y] != -1) continue;
+                if(visit[y]) continue;
                 Q.add(y);
-                dist[y] = dist[x] + 1;
-                ans++;
             }
         }
-        return ans;
     }
 
-    static void pro() {
-        System.out.println(bfs(1));
+    static void pro(int cnt) {
+        int ans = 0;
+        for(int i = 1; i <= N; i++) {
+            if(visit[i]) continue;
+            vertexCnt = 0;
+            edgeCnt = 0;
+            bfs(i);
+
+            if(edgeCnt == (vertexCnt - 1) * 2) ans++;
+        }
+        sb.append("Case " + cnt+ ": ");
+        if(ans == 0) sb.append("No trees.").append('\n');
+        else if(ans == 1) sb.append("There is one tree.").append('\n');
+        else sb.append("A forest of " + ans +" trees.").append('\n');
     }
 
     public static void main(String[] args) {
-        input();
-        pro();
+        int cnt = 1;
+        while(true) {
+            N = scan.nextInt();
+            M = scan.nextInt();
+            if(N == 0 && M == 0) break;
+            input();
+            pro(cnt++);
+        }
+        System.out.println(sb);
     }
 
     static class FastReader {
