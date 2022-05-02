@@ -1,43 +1,33 @@
-package test;
+package 트리.부동산다툼;
 
 import java.io.*;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, totalDepth;
-    static ArrayList<Integer>[] adj;
+    static int N, Q;
     static boolean[] visit;
 
     static void input() {
         N = scan.nextInt();
+        Q = scan.nextInt();
         visit = new boolean[N+1];
-        adj = new ArrayList[N+1];
-        for(int i = 1; i <= N; i++) {
-            adj[i] = new ArrayList<>();
-        }
-        for(int i = 1; i < N; i++) {
-            int x = scan.nextInt(), y = scan.nextInt();
-            adj[x].add(y);
-            adj[y].add(x);
-        }
-    }
-
-    static void dfs(int x, int prev, int depth) {
-        visit[x] = true;
-        if(x != 1 && adj[x].size() == 1) totalDepth += depth;
-
-        for(int y : adj[x]) {
-            if(visit[y]) continue;
-            dfs(y, x, depth + 1);
-        }
     }
 
     static void pro() {
-        dfs(1, -1, 0);
-        if(totalDepth % 2 == 0) System.out.println("No");
-        else System.out.println("Yes");
+        while(Q-- > 0) {
+            int x = scan.nextInt(), ans = 0;
+            int now = x;
+            while( x > 0) {
+                if(visit[x]) ans = x;
+                x /= 2;
+            }
+            visit[now] = true;
+            sb.append(ans).append('\n');
+        }
+        System.out.println(sb);
     }
 
     public static void main(String[] args) {

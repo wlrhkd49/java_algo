@@ -1,48 +1,48 @@
-package test;
+package 트리.가장가까운공통조상;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, totalDepth;
-    static ArrayList<Integer>[] adj;
+    static int N, A, B;
+    static int[] parent;
     static boolean[] visit;
 
     static void input() {
         N = scan.nextInt();
+        parent = new int[N+1];
         visit = new boolean[N+1];
-        adj = new ArrayList[N+1];
-        for(int i = 1; i <= N; i++) {
-            adj[i] = new ArrayList<>();
-        }
         for(int i = 1; i < N; i++) {
             int x = scan.nextInt(), y = scan.nextInt();
-            adj[x].add(y);
-            adj[y].add(x);
-        }
-    }
-
-    static void dfs(int x, int prev, int depth) {
-        visit[x] = true;
-        if(x != 1 && adj[x].size() == 1) totalDepth += depth;
-
-        for(int y : adj[x]) {
-            if(visit[y]) continue;
-            dfs(y, x, depth + 1);
+            parent[y] = x;
         }
     }
 
     static void pro() {
-        dfs(1, -1, 0);
-        if(totalDepth % 2 == 0) System.out.println("No");
-        else System.out.println("Yes");
+        int x = scan.nextInt(), y = scan.nextInt();
+
+        while( x > 0 ) {
+            visit[x] = true;
+            x = parent[x];
+        }
+
+        while( y > 0 && !visit[y] ) {
+            y = parent[y];
+        }
+
+        System.out.println(y);
     }
 
     public static void main(String[] args) {
-        input();
-        pro();
+        int t = scan.nextInt();
+        for(int i = 0; i < t; i++) {
+            input();
+            pro();
+        }
     }
 
     static class FastReader {
