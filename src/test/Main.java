@@ -6,28 +6,51 @@ import java.util.*;
 public class Main {
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, Q;
-    static boolean[] estate;
+    static int N, M, ans;
+    static ArrayList<Edge>[] adj;
+
+    static class Edge {
+        int y;
+        int cost;
+
+        public Edge(int _y, int _cost) {
+            this.y = _y;
+            this.cost = _cost;
+        }
+    }
 
     static void input() {
         N = scan.nextInt();
-        Q = scan.nextInt();
-        estate = new boolean[N+1];
+        M = scan.nextInt();
+        adj = new ArrayList[N+1];
+        for(int i = 1; i <= N; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for(int i = 1; i < N; i++) {
+            int x = scan.nextInt(), y = scan.nextInt(), cost = scan.nextInt();
+            adj[x].add(new Edge(y, cost));
+            adj[y].add(new Edge(x, cost));
+        }
+    }
+
+    static void dfs(int x, int prev, int goal, int dist) {
+        if(x == goal) {
+            ans = dist;
+            return;
+        }
+        for(Edge e : adj[x]) {
+            if(e.y == prev) continue;
+            dfs(e.y, x, goal, dist + e.cost);
+        }
+
     }
 
     static void pro() {
-        for(int i = 1; i <= Q; i++) {
-            int x = scan.nextInt();
-            int y = x;
-            int ans = 0;
-            while( x > 0 ) {
-                if(estate[x]) ans = x;
-                x /= 2;
-            }
-            estate[y] = true;
-            sb.append(ans).append('\n');
+        for(int i = 1; i <= M; i++) {
+            int x = scan.nextInt(), y = scan.nextInt();
+            dfs(x, -1, y, 0);
+            System.out.println(ans);
         }
-        System.out.println(sb);
     }
 
     public static void main(String[] args) {
