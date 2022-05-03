@@ -1,58 +1,56 @@
-package test;
+package 트리.트리와쿼리;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Main {
+
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
-    static int N, M;
-    static int[] a, par;
+    static int N, R, Q;
+    static ArrayList<Integer>[] adj;
+    static int[] subCnt;
 
     static void input() {
-        a = new int[N+1];
-        par = new int[N+1];
+        N = scan.nextInt();
+        R = scan.nextInt();
+        Q = scan.nextInt();
+        adj = new ArrayList[N+1];
+        subCnt = new int[N+1];
         for(int i = 1; i <= N; i++) {
-            a[i] = scan.nextInt();
+            adj[i] = new ArrayList<>();
+        }
+        for(int i = 1; i < N; i++) {
+            int x = scan.nextInt(), y = scan.nextInt();
+            adj[x].add(y);
+            adj[y].add(x);
+        }
+    }
+
+    static void dfs(int x, int prev) {
+        subCnt[x] = 1;
+
+        for(int y : adj[x]) {
+            if( y == prev ) continue;
+            dfs(y, x);
+            subCnt[x] += subCnt[y];
         }
     }
 
     static void pro() {
-        par[0] = -1;
-        par[1] = 0;
+        dfs(R, -1);
 
-        int last = 1;
-        for(int i = 2; i <= N; i++, last++) {
-            for(; i <= N; i++) {
-                par[i] = last;
-                if(i < N && a[i] + 1 != a[i+1]) break;
-            }
+        for(int i = 1; i <= Q; i++) {
+            int x = scan.nextInt();
+            sb.append(subCnt[x]).append('\n');
         }
-
-        int kIdx = 0;
-        for(int i = 1; i <= N; i++) {
-            if(a[i] == M) {
-                kIdx = i;
-                break;
-            }
-        }
-
-        int ans = 0;
-        for(int i = 1; i <= N; i++) {
-            if(kIdx == i) continue;
-            if(par[par[i]] == par[par[kIdx]] && par[i] != par[kIdx]) ans++;
-        }
-        System.out.println(ans);
+        System.out.println(sb);
     }
 
     public static void main(String[] args) {
-        while(true) {
-            N = scan.nextInt();
-            M = scan.nextInt();
-            if(N == 0 && M == 0) break;
-            input();
-            pro();
-        }
+        input();
+        pro();
     }
 
     static class FastReader {
