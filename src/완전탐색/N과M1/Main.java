@@ -18,6 +18,9 @@ public class Main {
         for(int i = 1; i<=N; i++) {
             isUsed[i] =  0;
         }
+
+        String s = "1S2D*3T";
+        char ch = s.toCharArray()[2];
     }
 
     static void pro(int k) {
